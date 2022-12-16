@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ips1">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -9,6 +8,7 @@
 
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -26,10 +26,13 @@
             android:name=".MyApplication"
             tools:ignore="Instantiatable" />
         <activity android:name=".BluetoothListener"
-            tools:ignore="Instantiatable" />
+                android:exported="true"
+                tools:ignore="Instantiatable" />
         <activity android:name=".BluetoothHelper"
+            android:exported="true"
             tools:ignore="Instantiatable" />
-        <activity android:name=".BeaconTransmitterActivity">
+        <activity android:name=".BeaconTransmitterActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
