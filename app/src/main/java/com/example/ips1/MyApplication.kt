@@ -13,15 +13,15 @@ import org.altbeacon.beacon.startup.RegionBootstrap
  * Created by Jaison on 02/03/17.
  */
 class MyApplication : Application() {
-    var regionBootstrap: RegionBootstrap? = null
-    var backgroundPowerSaver: BackgroundPowerSaver? = null
-    var beaconManager: BeaconManager? = null
-    var region: Region? = null
+    lateinit var regionBootstrap: RegionBootstrap
+    lateinit var backgroundPowerSaver: BackgroundPowerSaver
+    lateinit var beaconManager: BeaconManager
+    lateinit var region: Region
 
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "onCreate")
-        appContext = applicationContext
+//        appContext = applicationContext
         beaconManager = BeaconManager.getInstanceForApplication(this)
 
         // enables auto battery saving of about 60%
