@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
@@ -27,7 +28,15 @@ class BeaconTransmitterActivity : AppCompatActivity(),
     var etUUID: EditText? = null
     var etMajorValue: EditText? = null
     var etMinorValue: EditText? = null
-    var isBluetoothEnabled = false
+
+    /**
+     * keep `isBluetoothEnabled` as false
+     * and update it in onCreate function if bluetooth is on
+     * for now I've changed it to true to do some debugging
+     */
+    var isBluetoothEnabled = true
+
+
     var beacon: Beacon? = null
     var beaconParser: BeaconParser? = null
     var beaconTransmitter: BeaconTransmitter? = null
@@ -48,8 +57,8 @@ class BeaconTransmitterActivity : AppCompatActivity(),
         setContentView(R.layout.activity_beacon_transmitter)
         bluetoothHelper = BluetoothHelper()
         bluetoothHelper!!.initializeBluetooth(this)
-        val app = this.application as MyApplication
-        beaconManager = app.beaconManager
+//        val app = this.application as MyApplication()
+        beaconManager = BeaconManager.getInstanceForApplication(this)
         beaconManager!!.backgroundBetweenScanPeriod = 5000L
         beaconManager!!.foregroundBetweenScanPeriod = 5000L
         beaconManager!!.bind(this)
@@ -129,10 +138,13 @@ class BeaconTransmitterActivity : AppCompatActivity(),
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
         btn_transmit!!.setOnClickListener {
+            Log.d(TAG, "onCreate: btn_transmit")
             if (isBluetoothEnabled) {
+                Log.d(TAG, "onCreate: isBluetoothEnabled == true")
                 try {
                     trasmitClick()
                 } catch (e: Exception) {
+                    Log.d(TAG, "onCreate: ${e.message}")
                     Toast.makeText(
                         this@BeaconTransmitterActivity,
                         "Something went wrong",
@@ -152,7 +164,9 @@ class BeaconTransmitterActivity : AppCompatActivity(),
     }
 
     fun trasmitClick() {
+        Log.d(TAG, "trasmitClick: transmitClick")
         if (beaconTransmitter == null) {
+            Log.d(TAG, "trasmitClick: beaconTransmitter == null")
             var major: String
             var minor: String
             var uuid: String
@@ -198,6 +212,7 @@ class BeaconTransmitterActivity : AppCompatActivity(),
             btn_transmit!!.text = "Stop Advertising"
             btn_apply!!.isEnabled = false
         } else {
+            Log.d(TAG, "trasmitClick: beaconTransmitter != null")
             beaconTransmitter!!.startAdvertising()
             beaconTransmitter = null
             btn_transmit!!.text = "Start Advertising"
